@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Bridge | Good Food, Shared Goodness</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <a class="brand" href="{{ url_for('home') }}">
+        <span class="brand-icon">♧</span>
+        food<span>bridge</span>
+    </a>
+
+    <div class="nav-links">
+        <a href="#how-it-works">How it works</a>
+        <a href="#impact">Our impact</a>
+
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a class="nav-cta" href="{{ url_for('logout') }}">Logout ↗</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Log in</a>
+            <a class="nav-cta" href="{{ url_for('register') }}">Join Food Bridge ↗</a>
+        {% endif %}
+    </div>
+</nav>
+
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="eyebrow">
+                <span class="live-dot"></span>
+                LESS WASTE. MORE CARE.
+            </div>
+
+            <h1>Good food deserves<br>
+                a <span>second chance.</span>
+            </h1>
+
+            <p class="hero-description">
+                Connect surplus food with people who need it.
+                One meal at a time, let's make our community
+                kinder and our planet greener.
+            </p>
+
+            <div class="hero-actions">
+                {% if session.get('user_id') %}
+                    <a class="btn btn-primary"
+                       href="{{ url_for('dashboard') }}">
+                        Go to dashboard <span>↗</span>
+                    </a>
+                {% else %}
+                    <a class="btn btn-primary"
+                       href="{{ url_for('register') }}">
+                        Become a food hero <span>↗</span>
+                    </a>
+                    <a class="btn btn-secondary"
+                       href="{{ url_for('login') }}">
+                        Sign in
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="trust-note">
+                <span class="trust-symbol">✳</span>
+                <span>Share what you can. Take what you need.</span>
+            </div>
+        </div>
+
+        <div class="hero-art">
+            <div class="art-orbit orbit-one"></div>
+            <div class="art-orbit orbit-two"></div>
+
+            <div class="food-illustration">
+                <div class="food-leaf leaf-one"></div>
+                <div class="food-leaf leaf-two"></div>
+                <div class="food-leaf leaf-three"></div>
+                <div class="food-bowl">
+                    <span>🥗</span>
+                </div>
+            </div>
+
+            <div class="floating-card card-top">
+                <span class="mini-icon">♻</span>
+                <div>
+                    <strong>Waste less</strong>
+                    <small>Give food a purpose</small>
+                </div>
+            </div>
+
+            <div class="floating-card card-bottom">
+                <span class="mini-icon orange-icon">♥</span>
+                <div>
+                    <strong>Share more</strong>
+                    <small>Make kindness count</small>
+                </div>
+            </div>
+
+            <div class="art-caption">GOODNESS, PASSED ON.</div>
+        </div>
+    </section>
+
+    <section class="impact-strip" id="impact">
+        <div class="strip-intro">
+            <span class="section-kicker">SMALL ACTIONS, REAL CHANGE</span>
+            <h2>Make every meal matter.</h2>
+        </div>
+
+        <div class="impact-item">
+            <span class="impact-number">01</span>
+            <div>
+                <h3>Rescue food</h3>
+                <p>Share surplus food instead of wasting it.</p>
+            </div>
+        </div>
+
+        <div class="impact-item">
+            <span class="impact-number">02</span>
+            <div>
+                <h3>Connect people</h3>
+                <p>Bring donors and receivers together.</p>
+            </div>
+        </div>
+
+        <div class="impact-item">
+            <span class="impact-number">03</span>
+            <div>
+                <h3>Build community</h3>
+                <p>Turn everyday generosity into impact.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="journey" id="how-it-works">
+        <div class="journey-heading">
+            <span class="section-kicker">HOW FOOD BRIDGE WORKS</span>
+            <h2>Three steps. One better world.</h2>
+            <p>Food sharing made simple for everyone.</p>
+        </div>
+
+        <div class="journey-grid">
+            <article class="journey-card">
+                <div class="step-top">
+                    <span class="step-number">01</span>
+                    <span class="step-icon">🍲</span>
+                </div>
+                <h3>Donate food</h3>
+                <p>Have extra food? Add its details so people can find it.</p>
+                <span class="step-label">GIVE WITH CARE</span>
+            </article>
+
+            <article class="journey-card featured-card">
+                <div class="step-top">
+                    <span class="step-number">02</span>
+                    <span class="step-icon">🤝</span>
+                </div>
+                <h3>Find a match</h3>
+                <p>Receivers can browse available donations and send requests.</p>
+                <span class="step-label">CONNECT WITH PURPOSE</span>
+            </article>
+
+            <article class="journey-card">
+                <div class="step-top">
+                    <span class="step-number">03</span>
+                    <span class="step-icon">🌱</span>
+                </div>
+                <h3>Share goodness</h3>
+                <p>Coordinate collection and help good food reach people.</p>
+                <span class="step-label">GROW THE IMPACT</span>
+            </article>
+        </div>
+    </section>
+
+    <section class="closing-banner">
+        <div>
+            <span class="section-kicker">YOUR NEXT ACTION MATTERS</span>
+            <h2>A little food can make<br>a big difference.</h2>
+        </div>
+        <a class="btn btn-light"
+           href="{% if session.get('user_id') %}{{ url_for('dashboard') }}{% else %}{{ url_for('register') }}{% endif %}">
+            Get started <span>↗</span>
+        </a>
+        <div class="banner-decoration">✳</div>
+    </section>
+</main>
+
+<footer class="footer">
+    <a class="brand footer-brand" href="{{ url_for('home') }}">
+        <span class="brand-icon">♧</span>
+        food<span>bridge</span>
+    </a>
+    <p>Bridging surplus food and hungry hearts.</p>
+    <span class="footer-note">MADE FOR A BETTER TOMORROW ♡</span>
+</footer>
+
+</body>
+</html>

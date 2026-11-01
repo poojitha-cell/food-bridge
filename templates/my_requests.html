@@ -1,0 +1,111 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Requests | Food Bridge</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css', v=4) }}">
+</head>
+<body>
+
+    <nav class="requests-navbar">
+        <a href="/" class="requests-logo">
+            ♧ food<span>bridge</span>
+        </a>
+
+        <div class="requests-nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('logout') }}" class="requests-logout">
+                Logout ↗
+            </a>
+        </div>
+    </nav>
+
+    <main class="requests-page">
+
+        <div class="requests-heading">
+            <span class="requests-tag">YOUR FOOD JOURNEY</span>
+            <h1>My <span>Requests.</span></h1>
+            <p>Track the status of food donations you have requested.</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="requests-flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if requests_list %}
+            <div class="requests-grid">
+
+                {% for item in requests_list %}
+                    <div class="request-card">
+
+                        <div class="request-card-top">
+                            <span class="food-label">MY FOOD REQUEST</span>
+
+                            <span class="status status-{{ item['status']|lower }}">
+                                {{ item['status'] }}
+                            </span>
+                        </div>
+
+                        <h2>{{ item['food_name'] }}</h2>
+
+                        <div class="request-details">
+                            <p><strong>Quantity</strong>
+                                {{ item['quantity'] }}</p>
+
+                            <p><strong>Location</strong>
+                                {{ item['location'] }}</p>
+
+                            <p><strong>Donor</strong>
+                                {{ item['donor_name'] or 'Food Bridge Donor' }}</p>
+                                <p><strong>Donor Phone</strong>
+                                    {{ item['contact'] or 'Not provided' }}</p>
+
+                            <p><strong>Requested on</strong>
+                                {{ item['created_at'] }}</p>
+                        </div>
+
+                        {% if item['status'] == 'Approved' %}
+                            <p class="receiver-status-message">
+                                Your request has been approved by the donor!
+                            </p>
+                        {% elif item['status'] == 'Rejected' %}
+                            <p class="receiver-status-message rejected-message">
+                                This request was not approved.
+                            </p>
+                        {% else %}
+                            <p class="receiver-status-message pending-message">
+                                Waiting for the donor to respond.
+                            </p>
+                        {% endif %}
+
+                    </div>
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+            <div class="requests-empty">
+                <div class="empty-icon">♡</div>
+                <h2>No requests yet</h2>
+                <p>Food requests you make will appear here.</p>
+                <a href="{{ url_for('available_food') }}">
+                    Explore Available Food ↗
+                </a>
+            </div>
+        {% endif %}
+
+        <a class="requests-back" href="{{ url_for('dashboard') }}">
+            ← Back to Dashboard
+        </a>
+
+    </main>
+
+</body>
+</html>

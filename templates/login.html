@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Food Bridge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .auth-page {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 35px 18px;
+            background: #fbf8f0;
+        }
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(18,61,42,.10);
+        }
+        .auth-brand {
+            text-align: center;
+            color: #123d2a;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .auth-subtitle {
+            text-align: center;
+            color: #68736b;
+            margin-bottom: 28px;
+        }
+        .auth-card label {
+            display: block;
+            margin: 16px 0 7px;
+            color: #123d2a;
+            font-weight: 600;
+        }
+        .auth-card input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d9e0d8;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+        }
+        .auth-card input:focus {
+            border-color: #f59b50;
+            box-shadow: 0 0 0 3px rgba(245,155,80,.15);
+        }
+        .auth-submit {
+            width: 100%;
+            margin-top: 24px;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #123d2a;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .auth-submit:hover { background: #20573c; }
+        .auth-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #68736b;
+        }
+        .auth-link a {
+            color: #123d2a;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .auth-message {
+            padding: 11px;
+            border-radius: 8px;
+            margin: 10px 0;
+            background: #fff0e1;
+            color: #8a4b14;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-brand">🌿 Food Bridge</div>
+            <p class="auth-subtitle">Welcome back! Login to continue.</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="auth-message">{{ message }}</div>
+                {% endfor %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('login') }}">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email"
+                       placeholder="Enter your email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"
+                       placeholder="Enter your password" required>
+
+                <button class="auth-submit" type="submit">Login →</button>
+            </form>
+
+            <p class="auth-link">
+                Don't have an account?
+                <a href="{{ url_for('register') }}">Register here</a>
+            </p>
+            <p class="auth-link">
+                <a href="{{ url_for('home') }}">← Back to Home</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+```

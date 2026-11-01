@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Food Bridge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fbf8f0;
+            color: #24382b;
+        }
+
+        .navbar {
+            background: #123d2a;
+            color: white;
+            padding: 17px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .brand {
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover { color: #f59b50; }
+
+        .container {
+            width: 86%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .welcome {
+            background: #123d2a;
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome h1 {
+            font-size: 32px;
+            margin: 0 0 12px;
+        }
+
+        .welcome p {
+            color: #e1ebdf;
+            line-height: 1.7;
+            max-width: 580px;
+            margin-bottom: 0;
+        }
+
+        .welcome .leaf {
+            font-size: 65px;
+            position: absolute;
+            right: 35px;
+            top: 25px;
+        }
+
+        .section-title {
+            color: #123d2a;
+            margin: 32px 0 18px;
+            font-size: 23px;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .action-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #e9e6dc;
+            box-shadow: 0 7px 20px rgba(18,61,42,.06);
+            transition: transform .2s;
+        }
+
+        .action-card:hover { transform: translateY(-4px); }
+
+        .action-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .action-card h3 {
+            color: #123d2a;
+            margin: 0 0 10px;
+        }
+
+        .action-card p {
+            color: #69746b;
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 45px;
+        }
+
+        .action-btn {
+            display: inline-block;
+            background: #123d2a;
+            color: white;
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .action-btn:hover { background: #20573c; }
+
+        .orange-btn {
+            background: #f59b50;
+            color: #123d2a;
+        }
+
+        .orange-btn:hover { background: #ffc078; }
+
+        .messages {
+            background: #e5f4e8;
+            color: #20573c;
+            border: 1px solid #c4e5cb;
+            padding: 13px 16px;
+            border-radius: 9px;
+            margin-bottom: 18px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #758076;
+            padding: 25px 15px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar { padding: 16px 5%; }
+            .container { width: 90%; }
+            .welcome { padding: 26px 22px; }
+            .welcome h1 { font-size: 25px; }
+            .welcome .leaf { font-size: 40px; right: 18px; }
+            .nav-links { gap: 12px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="{{ url_for('home') }}" class="brand">🌿 Food Bridge</a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+
+            {% if session.get('role') == 'donor' %}
+                <a href="{{ url_for('donate') }}">Donate Food</a>
+                <a href="{{ url_for('donor_requests') }}">Donor Requests</a>
+            {% endif %}
+
+            {% if session.get('role') == 'receiver' %}
+                <a href="{{ url_for('available_food') }}">Available Food</a>
+                <a href="{{ url_for('my_requests') }}">My Requests</a>
+            {% endif %}
+
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="messages">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <section class="welcome">
+            <div class="leaf">🌱</div>
+            <h1>Welcome to Food Bridge!</h1>
+            <p>
+                Small acts of kindness can make a big difference.
+                Share extra food, help people in need, and be part
+                of a community working towards zero food waste.
+            </p>
+        </section>
+
+        <h2 class="section-title">What would you like to do?</h2>
+
+        <div class="action-grid">
+
+            {% if session.get('role') == 'donor' %}
+
+                <div class="action-card">
+                    <div class="action-icon">🍱</div>
+                    <h3>Donate Food</h3>
+                    <p>Have extra food? Share it with someone who needs it.</p>
+                    <a href="{{ url_for('donate') }}" class="action-btn">
+                        Donate Now →
+                    </a>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">📋</div>
+                    <h3>Donor Requests</h3>
+                    <p>Check food requests and manage their status.</p>
+                    <a href="{{ url_for('donor_requests') }}"
+                       class="action-btn orange-btn">
+                        View Requests →
+                    </a>
+                </div>
+
+            {% endif %}
+
+            {% if session.get('role') == 'receiver' %}
+
+                <div class="action-card">
+                    <div class="action-icon">🥗</div>
+                    <h3>Find Food</h3>
+                    <p>Explore available food donations in your community.</p>
+                    <a href="{{ url_for('available_food') }}"
+                       class="action-btn orange-btn">
+                        View Available Food →
+                    </a>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">📩</div>
+                    <h3>My Requests</h3>
+                    <p>Track the status of food requests you have submitted.</p>
+                    <a href="{{ url_for('my_requests') }}"
+                       class="action-btn">
+                        Track My Requests →
+                    </a>
+                </div>
+
+            {% endif %}
+
+            <div class="action-card">
+                <div class="action-icon">🏡</div>
+                <h3>Home</h3>
+                <p>Return to the Food Bridge home page.</p>
+                <a href="{{ url_for('home') }}"
+                   class="action-btn orange-btn">
+                    Go to Home →
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        🌿 Food Bridge — Share Food, Spread Kindness.
+    </footer>
+
+</body>
+</html>

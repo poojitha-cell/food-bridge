@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Food | Food Bridge</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="food-navbar">
+        <a href="{{ url_for('home') }}" class="brand">
+            🌿 Food Bridge
+        </a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('available_food') }}">Available Food</a>
+            <a href="{{ url_for('donate') }}">Donate Food</a>
+            <a href="{{ url_for('donor_requests') }}">Donor Requests</a>
+        </div>
+    </nav>
+
+    <header class="food-hero">
+        <div class="hero-content">
+            <span class="eyebrow">FOOD SHARING • COMMUNITY CARE</span>
+            <h1>Good Food. Good Hearts. 💚</h1>
+            <p>
+                Explore available food donations and help reduce
+                food waste by connecting food with people in need.
+            </p>
+
+            <a href="{{ url_for('donate') }}" class="hero-button">
+                Donate Food +
+            </a>
+        </div>
+    </header>
+
+    <main class="food-content">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="notice {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">FRESH OPPORTUNITIES</span>
+                <h2>Available Food</h2>
+                <p>Choose a donation and send a food request.</p>
+            </div>
+
+            <a href="{{ url_for('dashboard') }}" class="back-link">
+                ← Dashboard
+            </a>
+        </div>
+
+        {% if donations %}
+
+            <section class="food-grid">
+
+                {% for donation in donations %}
+                    <article class="food-card">
+
+                        <div class="card-top">
+                            <div class="food-icon">🍱</div>
+                            <span class="available-badge">
+                                ● Available
+                            </span>
+                        </div>
+
+                        <h3>{{ donation['food_name'] }}</h3>
+
+                        <div class="food-details">
+                            <div class="detail-row">
+                                <span class="detail-icon">📦</span>
+                                <div>
+                                    <small>Quantity</small>
+                                    <strong>{{ donation['quantity'] }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="detail-row">
+                                <span class="detail-icon">📍</span>
+                                <div>
+                                    <small>Pickup Location</small>
+                                    <strong>{{ donation['location'] }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="detail-row">
+                                <span class="detail-icon">🤝</span>
+                                <div>
+                                    <small>Donated By</small>
+                                    <strong>{{ donation['donor_name'] }}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form
+                            method="POST"
+                            action="{{ url_for('request_food', donation_id=donation['id']) }}"
+                        >
+                            <button type="submit" class="request-btn">
+                                Request This Food <span>→</span>
+                            </button>
+                        </form>
+
+                    </article>
+                {% endfor %}
+
+            </section>
+
+        {% else %}
+
+            <section class="empty-state">
+                <div class="empty-icon">🥣</div>
+                <h2>No Food Available Yet</h2>
+                <p>
+                    There are no food donations at the moment.
+                    Please check again later.
+                </p>
+
+                <a href="{{ url_for('dashboard') }}" class="request-btn">
+                    Back to Dashboard
+                </a>
+            </section>
+
+        {% endif %}
+
+        <section class="kindness-banner">
+            <span class="banner-icon">🌱</span>
+            <div>
+                <h3>Every meal shared makes a difference.</h3>
+                <p>Let's build a community where good food never goes to waste.</p>
+            </div>
+            <a href="{{ url_for('donate') }}">Share Food →</a>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <strong>🌿 Food Bridge</strong>
+        <p>Sharing food. Spreading kindness. Reducing waste.</p>
+        <small>© 2026 Food Bridge</small>
+    </footer>
+
+</body>
+</html>

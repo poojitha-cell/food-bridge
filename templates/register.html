@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register | Food Bridge</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fbf8f0;
+            color: #24382b;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px 15px;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            padding: 32px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(18, 61, 42, 0.12);
+        }
+
+        .brand {
+            text-align: center;
+            font-size: 29px;
+            font-weight: bold;
+            color: #123d2a;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #68736b;
+            line-height: 1.6;
+            margin: 12px 0 25px;
+        }
+
+        label {
+            display: block;
+            margin: 16px 0 7px;
+            font-weight: bold;
+            color: #123d2a;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d9e0d8;
+            border-radius: 9px;
+            background: #fff;
+            font-size: 15px;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #f59b50;
+            border-color: transparent;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 24px;
+            border: none;
+            border-radius: 9px;
+            background: #123d2a;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #20573c;
+        }
+
+        .message {
+            display: none;
+            padding: 12px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.error {
+            display: block;
+            background: #fff0e1;
+            color: #8a3514;
+            border: 1px solid #f5c9a4;
+        }
+
+        .message.success {
+            display: block;
+            background: #e5f4e8;
+            color: #20573c;
+            border: 1px solid #c4e5cb;
+        }
+
+        .login-link, .home-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #68736b;
+            font-size: 14px;
+        }
+
+        .login-link a, .home-link a {
+            color: #123d2a;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover, .home-link a:hover {
+            color: #f59b50;
+        }
+
+        @media (max-width: 480px) {
+            .register-card {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <section class="register-card">
+
+            <div class="brand">🌿 Food Bridge</div>
+
+            <p class="subtitle">
+                Create your account and help reduce food waste.
+            </p>
+
+            <!-- Flask messages -->
+            <div id="registerMessage" class="message"
+                 role="status" aria-live="polite"></div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="message {{ 'error' if category == 'error' else 'success' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+
+            <form id="registerForm"
+                  method="POST"
+                  action="{{ url_for('register') }}">
+
+                <label for="name">Full Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required
+                >
+
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    minlength="6"
+                    autocomplete="new-password"
+                    required
+                >
+
+                <label for="role">Select Role</label>
+                <select id="role" name="role" required>
+                    <option value="">Choose your role</option>
+                    <option value="Donor">Donor — Donate Food</option>
+                    <option value="Receiver">Receiver — Request Food</option>
+                </select>
+
+                <button type="submit" class="submit-btn">
+                    Create Account →
+                </button>
+            </form>
+
+            <p class="login-link">
+                Already have an account?
+                <a href="{{ url_for('login') }}">Login here</a>
+            </p>
+
+            <p class="home-link">
+                <a href="{{ url_for('home') }}">← Back to Home</a>
+            </p>
+
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById("registerForm");
+        const message = document.getElementById("registerMessage");
+
+        form.addEventListener("submit", function (event) {
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const role = document.getElementById("role").value;
+
+            message.className = "message";
+            message.textContent = "";
+
+            if (!name || !email || !password || !role) {
+                event.preventDefault();
+                message.textContent = "Please fill all fields and select a role.";
+                message.className = "message error";
+                return;
+            }
+
+            if (password.length < 6) {
+                event.preventDefault();
+                message.textContent = "Password must contain at least 6 characters.";
+                message.className = "message error";
+                return;
+            }
+        });
+    </script>
+</body>
+</html>
