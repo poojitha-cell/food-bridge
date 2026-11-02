@@ -452,7 +452,7 @@ def donor_requests():
                 ON donation_requests.donation_id = donations.id
             JOIN users
                 ON donation_requests.receiver_id = users.id
-            WHERE donations.donor_id = ?
+            WHERE donations.donor_id = %s
             ORDER BY donation_requests.id DESC
         """, (donor_id,)).fetchall()
 
@@ -520,4 +520,4 @@ def update_request(request_id):
 # ---------------- RUN APPLICATION ----------------
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
