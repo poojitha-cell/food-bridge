@@ -1,4 +1,5 @@
 
+
 from flask import (
     Flask, render_template, request, redirect,
     url_for, flash, session
@@ -95,9 +96,8 @@ def init_db():
             ADD COLUMN IF NOT EXISTS donor_id INTEGER REFERENCES users(id)
         """)
 
-
-init_db()
-
+if os.getenv("SKIP_DB_INIT") != "1":
+    init_db()
 # ---------------- HOME ----------------
 
 @app.route("/")
