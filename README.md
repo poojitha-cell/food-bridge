@@ -1,9 +1,9 @@
-# 🍲 Food Bridge – Food Donation and Sharing Platform
+# Food Bridge – Food Donation and Sharing Platform
 
-## 📌 Project Overview
+##  Project Overview
 Food Bridge is a web-based food donation platform that connects food donors with people who need food. It helps reduce food waste by allowing donors to share surplus food with receivers.
 
-## ✨ Features
+## Features
 - User Registration and Login
 - Separate Donor and Receiver Roles
 - Donor Dashboard
@@ -97,7 +97,7 @@ python app.py
 
 Open `http://127.0.0.1:5000/` in your browser.
 
-## 🐳 Docker
+##  Docker
 
 Build and run the application using Docker Compose:
 
@@ -105,7 +105,7 @@ Build and run the application using Docker Compose:
 docker compose up --build
 ```
 
-## ☁️ Deployment
+## Deployment
 
 Food Bridge is deployed using Render.
 
@@ -114,7 +114,7 @@ Food Bridge is deployed using Render.
 - Render PostgreSQL stores application data.
 - Environment variables are configured securely in Render.
 
-## 🔄 DevOps Workflow
+## DevOps Workflow
 
 1. Develop the application using Python and Flask.
 2. Track source-code changes using Git.
@@ -123,7 +123,7 @@ Food Bridge is deployed using Render.
 5. Use Docker to containerize the application.
 6. Deploy the application using Render.
 
-## 🎯 Conclusion
+## Conclusion
 
 Food Bridge provides a simple platform for connecting food donors and receivers. It encourages food sharing, reduces food waste, and demonstrates the use of web development and DevOps technologies.
 
